@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ProjectIcon } from "./ProjectIcon";
 import type { Project } from "@/types/project";
 
@@ -13,6 +13,25 @@ const METRIC_CLASS: Record<Project["metrics"][number]["color"], string> = {
 export function ProjectCard({ project, baseRy, baseRx }: { project: Project; baseRy: number; baseRx: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const el = cardRef.current;
@@ -139,7 +158,15 @@ export function ProjectCard({ project, baseRy, baseRx }: { project: Project; bas
           className="screen-card"
           style={{ transform: `perspective(1100px) rotateY(${baseRy}deg) rotateX(${baseRx}deg)` }}
         >
-          <video ref={videoRef} src={project.video_path} autoPlay loop muted playsInline />
+          <video
+            ref={videoRef}
+            src={visible ? project.video_path : undefined}
+            preload="none"
+            autoPlay={visible}
+            loop
+            muted
+            playsInline
+          />
         </div>
         <span className="drag-hint">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
