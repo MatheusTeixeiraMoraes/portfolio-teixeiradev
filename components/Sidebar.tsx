@@ -62,7 +62,7 @@ export function Sidebar() {
         </a>
         <div className="social-row">
           <a
-            href="https://wa.me/5511973988169"
+            href="https://wa.me/5511974988169"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp"
