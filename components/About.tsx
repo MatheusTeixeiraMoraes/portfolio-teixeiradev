@@ -32,8 +32,6 @@ export function About() {
           <span className="about-stat-label">Economizadas com automação</span>
         </div>
       </div>
-
-      <div className="about-quote">&quot;Success lies in imbalance.&quot;</div>
     </section>
   );
 }

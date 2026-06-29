@@ -40,6 +40,13 @@ a{text-decoration:none;color:inherit}
 .sidebar-top h1{font-size:2.1rem;font-weight:700;color:var(--text);letter-spacing:-.02em;margin-bottom:.6rem}
 .sidebar-top h2{font-size:1.05rem;font-weight:500;color:var(--text);margin-bottom:1rem}
 .sidebar-top h2 .role-accent{color:var(--accent)}
+.sidebar-quote{
+  border-left:2px solid var(--accent);padding:.5rem 1rem;margin:1rem 0 1.3rem;
+  font-size:13px;color:var(--text-body);font-style:italic;max-width:280px;
+  animation:quote-glow 4s ease-in-out infinite;
+}
+@keyframes quote-glow{0%,100%{border-left-color:var(--accent)}50%{border-left-color:var(--accent-border)}}
+@media(prefers-reduced-motion:reduce){.sidebar-quote{animation:none}}
 .sidebar-top p{font-size:14px;color:var(--text-muted);line-height:1.7;max-width:280px}
 
 .side-nav{margin-top:3rem;display:flex;flex-direction:column;gap:1rem}
@@ -81,8 +88,6 @@ a{text-decoration:none;color:inherit}
 
 .about p{font-size:15px;color:var(--text-body);line-height:1.85;margin-bottom:1.1rem}
 .about strong{color:var(--text);font-weight:600}
-.about-quote{border-left:2px solid var(--accent);padding:.6rem 1.1rem;margin-top:1.5rem;font-size:14px;color:var(--text-body);font-style:italic}
-
 .about-stats{display:flex;border:1px solid var(--border);border-radius:14px;background:var(--bg-card);margin:1.75rem 0;overflow:hidden}
 .about-stat{flex:1;padding:1.4rem 1.75rem}
 .about-stat+.about-stat{border-left:1px solid var(--border)}

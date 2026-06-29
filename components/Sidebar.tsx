@@ -37,6 +37,7 @@ export function Sidebar() {
         <h2>
           Software <span className="role-accent">Developer</span>
         </h2>
+        <div className="sidebar-quote">&quot;Success lies in imbalance.&quot;</div>
         <p>Desenvolvo plataformas web, automações e dashboards do zero — com usuários ativos e código em produção.</p>
 
         <nav className="side-nav">
