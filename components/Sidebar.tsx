@@ -34,7 +34,9 @@ export function Sidebar() {
     <aside className="sidebar">
       <div className="sidebar-top">
         <h1>Matheus Teixeira</h1>
-        <h2>Software Developer</h2>
+        <h2>
+          Software <span className="role-accent">Developer</span>
+        </h2>
         <p>Desenvolvo plataformas web, automações e dashboards do zero — com usuários ativos e código em produção.</p>
 
         <nav className="side-nav">
