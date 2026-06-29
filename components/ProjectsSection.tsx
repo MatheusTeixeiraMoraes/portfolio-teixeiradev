@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { ProjectRow } from "./ProjectRow";
+import { ProjectCard } from "./ProjectCard";
 import type { Project } from "@/types/project";
 
 const TILTS = [
@@ -20,16 +20,17 @@ export async function ProjectsSection() {
   const projects = (data ?? []) as Project[];
 
   return (
-    <div className="proj-section" id="projetos">
-      <div className="proj-section-header">
-        <div className="eyebrow">Projetos</div>
-        <div className="sec-title">Sistemas em produção</div>
+    <section className="section" id="projetos">
+      <div className="section-head">
+        <span className="section-num">02.</span>
+        <h2 className="section-title">Projetos</h2>
+        <span className="section-line" />
       </div>
 
       {projects.map((project, i) => {
         const tilt = TILTS[i % TILTS.length];
-        return <ProjectRow key={project.id} project={project} baseRy={tilt.ry} baseRx={tilt.rx} />;
+        return <ProjectCard key={project.id} project={project} baseRy={tilt.ry} baseRx={tilt.rx} />;
       })}
-    </div>
+    </section>
   );
 }

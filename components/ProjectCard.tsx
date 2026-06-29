@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { ProjectIcon } from "./ProjectIcon";
-import { PILL_COLORS } from "./colorScheme";
 import type { Project } from "@/types/project";
 
 const METRIC_CLASS: Record<Project["metrics"][number]["color"], string> = {
@@ -11,7 +10,7 @@ const METRIC_CLASS: Record<Project["metrics"][number]["color"], string> = {
   purple: "p",
 };
 
-export function ProjectRow({ project, baseRy, baseRx }: { project: Project; baseRy: number; baseRx: number }) {
+export function ProjectCard({ project, baseRy, baseRx }: { project: Project; baseRy: number; baseRx: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -103,12 +102,10 @@ export function ProjectRow({ project, baseRy, baseRx }: { project: Project; base
       (video as HTMLVideoElement & { webkitEnterFullscreen?: () => void }).webkitEnterFullscreen!();
   }
 
-  const pillColors = PILL_COLORS[project.color_scheme];
-
   return (
     <div className={`proj-row ${project.reverse ? "rev" : ""}`}>
       <div className="pi">
-        <span className="pi-pill" style={{ background: pillColors.background, color: pillColors.color }}>
+        <span className={`pi-pill pill-${project.color_scheme}`}>
           <ProjectIcon icon={project.icon_key} />
           {project.pill_label}
         </span>

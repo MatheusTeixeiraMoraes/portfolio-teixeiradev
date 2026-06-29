@@ -1,23 +1,26 @@
-import { Navbar } from "@/components/Navbar";
-import { Hero } from "@/components/Hero";
-import { Sobre } from "@/components/Sobre";
+import { Sidebar } from "@/components/Sidebar";
+import { About } from "@/components/About";
 import { ProjectsSection } from "@/components/ProjectsSection";
-import { Skills } from "@/components/Skills";
-import { CTA } from "@/components/CTA";
+import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
+import { PageBackground } from "@/components/PageBackground";
+import { StackTags } from "@/components/StackTags";
 
 export default function Home() {
   return (
-    <>
-      <Navbar />
-      <Hero />
-      <div className="main">
-        <Sobre />
+    <div className="layout">
+      <PageBackground />
+      <Sidebar />
+      <main className="main">
+        <About />
         <ProjectsSection />
-        <Skills />
-      </div>
-      <CTA />
-      <Footer />
-    </>
+        <div className="mobile-stack">
+          <span className="sidebar-stack-label">Stack técnica</span>
+          <StackTags />
+        </div>
+        <Contact />
+        <Footer />
+      </main>
+    </div>
   );
 }
