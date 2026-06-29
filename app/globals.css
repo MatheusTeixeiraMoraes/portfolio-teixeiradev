@@ -11,10 +11,15 @@
   --coral:#FB7185;--coral-light:rgba(251,113,133,.12);
   --radius:8px;--mono:'Inter',sans-serif;
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scrollbar-color:var(--bg-card-hover) var(--bg);scrollbar-width:thin}
 body{font-family:'Inter',sans-serif;color:var(--text-body);background:var(--bg);line-height:1.6;transition:background .25s,color .25s}
 a{text-decoration:none;color:inherit}
 ::selection{background:var(--accent-tint);color:var(--accent)}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bg-card-hover);border-radius:8px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
 
 .page-bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;display:block}
 .page-bg span{position:absolute;border-radius:50%;filter:blur(85px)}
