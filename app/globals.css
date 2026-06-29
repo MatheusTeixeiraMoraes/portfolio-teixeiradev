@@ -1,17 +1,5 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f6f8fa;--bg-card:#ffffff;--bg-card-hover:#eef1f6;
-  --border:#e8e8e8;
-  --text:#1a1a1a;--text-body:#666666;--text-muted:#999999;
-  --accent:#185FA5;--accent-tint:rgba(24,95,165,.08);--accent-border:rgba(24,95,165,.25);
-  --blue:#185FA5;--blue-mid:#378ADD;--blue-light:#E6F1FB;
-  --green:#3B6D11;--green-light:#EAF3DE;
-  --amber:#854F0B;--amber-light:#FAEEDA;
-  --purple:#534AB7;--purple-light:#EEEDFE;
-  --coral:#993C1D;--coral-light:#FDEAE3;
-  --radius:8px;--mono:'Inter',sans-serif;
-}
-[data-theme="dark"]{
   --bg:#0D1117;--bg-card:#161B22;--bg-card-hover:#21262D;
   --border:rgba(255,255,255,.08);
   --text:#ffffff;--text-body:#b3b3b3;--text-muted:#7d7d7d;
@@ -21,14 +9,14 @@
   --amber:#FBBF24;--amber-light:rgba(251,191,36,.12);
   --purple:#C084FC;--purple-light:rgba(192,132,252,.14);
   --coral:#FB7185;--coral-light:rgba(251,113,133,.12);
+  --radius:8px;--mono:'Inter',sans-serif;
 }
 html{scroll-behavior:smooth}
 body{font-family:'Inter',sans-serif;color:var(--text-body);background:var(--bg);line-height:1.6;transition:background .25s,color .25s}
 a{text-decoration:none;color:inherit}
 ::selection{background:var(--accent-tint);color:var(--accent)}
 
-.page-bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;display:none}
-[data-theme="dark"] .page-bg{display:block}
+.page-bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;display:block}
 .page-bg span{position:absolute;border-radius:50%;filter:blur(85px)}
 .page-bg .b1{width:560px;height:560px;top:-140px;left:0;background:var(--blue);opacity:.22;animation:bg-drift-1 13s ease-in-out infinite}
 .page-bg .b2{width:480px;height:480px;top:40%;right:-60px;background:var(--blue-mid);opacity:.18;animation:bg-drift-2 16s ease-in-out infinite}
@@ -73,13 +61,6 @@ a{text-decoration:none;color:inherit}
 .side-nav a.active .dash{width:40px;background:var(--accent)}
 
 .sidebar-bottom{display:flex;flex-direction:column;gap:1.25rem}
-.theme-toggle{
-  background:transparent;border:1px solid var(--border);border-radius:6px;
-  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;color:var(--text-muted);flex-shrink:0;align-self:flex-start;
-}
-.theme-toggle:hover{color:var(--accent);border-color:var(--accent-border)}
-.theme-toggle svg{width:15px;height:15px}
 .social-email{display:flex;align-items:center;gap:8px;color:var(--text-muted);font-family:var(--mono);font-size:12.5px;transition:color .2s}
 .social-email:hover{color:var(--accent)}
 .social-email svg{width:20px;height:20px;flex-shrink:0}
