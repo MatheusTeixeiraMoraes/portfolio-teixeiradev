@@ -18,11 +18,20 @@ export function About() {
         que escreve o código — sou quem entende o problema, planeja a solução e entrega o resultado. Transito
         naturalmente entre os três mundos: do diagrama de arquitetura à conversa com o cliente.
       </p>
-      <p>
-        Tenho <strong>7 sistemas entregues</strong>, já rastreei <strong>R$1.77B em TPV</strong> e ajudei a
-        economizar <strong>600h/mês</strong> de trabalho manual através de automação. Tudo construído com
-        consistência, não sorte.
-      </p>
+      <div className="about-stats">
+        <div className="about-stat">
+          <span className="about-stat-value">7</span>
+          <span className="about-stat-label">Sistemas entregues</span>
+        </div>
+        <div className="about-stat">
+          <span className="about-stat-value">R$1.77B</span>
+          <span className="about-stat-label">TPV rastreado</span>
+        </div>
+        <div className="about-stat">
+          <span className="about-stat-value">600h/mês</span>
+          <span className="about-stat-label">Economizadas com automação</span>
+        </div>
+      </div>
 
       <div className="about-quote">&quot;Success lies in imbalance.&quot;</div>
     </section>
