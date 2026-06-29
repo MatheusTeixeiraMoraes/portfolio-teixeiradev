@@ -1,81 +1,82 @@
 "use client";
 
 import { Fragment, useEffect, useRef, useState } from "react";
+import { StackIcon, type StackIconKey } from "./StackIcon";
 
-const STACK = [
+const STACK: { name: string; icon: StackIconKey; desc: string }[] = [
   {
     name: "React / Next.js",
-    icon: "⚛️",
+    icon: "react",
     desc: "Framework JavaScript para interfaces modernas. Next.js adiciona roteamento, SSR e deploy otimizado — base de todos os projetos SaaS desta plataforma.",
   },
   {
     name: "TypeScript",
-    icon: "🔷",
+    icon: "typescript",
     desc: "JavaScript com tipagem estática. Reduz bugs em produção e torna o código mais previsível em sistemas complexos com múltiplos desenvolvedores.",
   },
   {
     name: "Supabase",
-    icon: "⚡",
+    icon: "supabase",
     desc: "Backend como serviço: banco PostgreSQL, autenticação, permissões por linha (RLS) e funções serverless — tudo integrado e pronto para escala.",
   },
   {
     name: "PostgreSQL / SQL",
-    icon: "🗄️",
+    icon: "postgres",
     desc: "Banco de dados relacional robusto. Queries avançadas, joins, views e controle total dos dados — especialmente útil em sistemas multi-tenant.",
   },
   {
     name: "Node.js",
-    icon: "🟢",
+    icon: "node",
     desc: "Runtime JavaScript no servidor. Usado para workers, processamento em background e APIs que precisam rodar fora do ciclo de request do front.",
   },
   {
     name: "Vercel / Deploy",
-    icon: "🚀",
+    icon: "vercel",
     desc: "Plataforma de deploy com CDN global. Cada push no GitHub gera um deploy automático com preview de branch — ciclo de entrega contínuo.",
   },
   {
     name: "Cloudflare",
-    icon: "🛡️",
+    icon: "cloudflare",
     desc: "Camada de segurança e performance na frente de tudo: proteção contra DDoS, WAF, rate limiting e certificados SSL automáticos.",
   },
   {
     name: "Google Maps API",
-    icon: "📍",
+    icon: "maps",
     desc: "API de geolocalização e rotas. Usada para construir sistemas de Smart Routes com otimização de percurso em campo.",
   },
   {
     name: "IA & Agentes",
-    icon: "🤖",
+    icon: "ai",
     desc: "Integração com modelos de linguagem para automação inteligente de processos — de atendimento a análise de dados em tempo real.",
   },
   {
     name: "Claude Code",
-    icon: "🧠",
+    icon: "claude",
     desc: "Desenvolvimento assistido por IA diretamente no editor. Acelera desde a escrita de código até debugging e arquitetura de sistemas.",
   },
   {
     name: "WhatsApp / Automações",
-    icon: "💬",
+    icon: "whatsapp",
     desc: "Automações de mensagens integradas ao fluxo de negócio — notificações, follow-ups e bots que eliminam trabalho manual repetitivo.",
   },
   {
     name: "SaaS / Multi-tenant",
-    icon: "🏢",
+    icon: "saas",
     desc: "Arquitetura onde um único sistema serve múltiplos clientes isolados. Cada empresa vê só seus dados, com permissões e configurações próprias.",
   },
   {
     name: "White Label",
-    icon: "🎨",
+    icon: "whitelabel",
     desc: "Produto customizável com a marca do cliente. Interface, cores e identidade adaptadas por empresa — sem alterar o código base.",
   },
   {
     name: "UI / Design",
-    icon: "✏️",
+    icon: "design",
     desc: "Criação de interfaces do zero: wireframes, identidade visual, componentes reutilizáveis e experiência do usuário pensada para conversão.",
   },
   {
     name: "Dashboards",
-    icon: "📊",
+    icon: "dashboard",
     desc: "Painéis de dados em tempo real com métricas, gráficos e KPIs — transformando dados brutos em decisões operacionais rápidas.",
   },
 ];
@@ -142,7 +143,9 @@ export function StackTags() {
             onClick={() => toggle(i)}
             aria-expanded={openIndex === i}
           >
-            <span className="skill-emoji">{item.icon}</span>
+            <span className="skill-icon">
+              <StackIcon icon={item.icon} />
+            </span>
             {item.name}
             <svg className="skill-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polyline points="6 9 12 15 18 9" />
@@ -154,7 +157,9 @@ export function StackTags() {
               <div className="skill-popover" role="dialog" style={{ marginLeft: popover.marginLeft, width: popover.width }}>
                 <span className="skill-popover-arrow" style={{ left: popover.arrowLeft }} />
                 <div className="skill-popover-head">
-                  <span className="skill-popover-icon">{item.icon}</span>
+                  <span className="skill-popover-icon">
+                    <StackIcon icon={item.icon} />
+                  </span>
                   <span className="skill-popover-name">{item.name}</span>
                 </div>
                 <p className="skill-popover-desc">{item.desc}</p>
