@@ -103,6 +103,12 @@ export function StackTags() {
     };
   }, []);
 
+  useEffect(() => {
+    if (openIndex === null) return;
+    const line = rowRef.current?.querySelector(".skill-popover-line");
+    line?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [openIndex]);
+
   function toggle(i: number) {
     if (openIndex === i) {
       setOpenIndex(null);
