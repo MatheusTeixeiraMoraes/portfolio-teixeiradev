@@ -37,7 +37,7 @@ export function ProjectCard({ project, baseRy, baseRx }: { project: Project; bas
 
   useEffect(() => {
     const el = cardRef.current;
-    if (!el) return;
+    if (!el || isInteractive) return;
 
     let dragging = false;
     let sx = 0;
@@ -113,7 +113,7 @@ export function ProjectCard({ project, baseRy, baseRx }: { project: Project; bas
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
     };
-  }, [baseRy, baseRx]);
+  }, [baseRy, baseRx, isInteractive]);
 
   function handleFullscreen() {
     const el = isInteractive ? iframeRef.current : videoRef.current;
@@ -158,11 +158,7 @@ export function ProjectCard({ project, baseRy, baseRx }: { project: Project; bas
         <div
           ref={cardRef}
           className="screen-card"
-          style={
-            isInteractive
-              ? undefined
-              : { transform: `perspective(1100px) rotateY(${baseRy}deg) rotateX(${baseRx}deg)` }
-          }
+          style={{ transform: `perspective(1100px) rotateY(${baseRy}deg) rotateX(${baseRx}deg)` }}
         >
           {isInteractive ? (
             <iframe
