@@ -158,7 +158,11 @@ export function ProjectCard({ project, baseRy, baseRx }: { project: Project; bas
         <div
           ref={cardRef}
           className="screen-card"
-          style={{ transform: `perspective(1100px) rotateY(${baseRy}deg) rotateX(${baseRx}deg)` }}
+          style={
+            isInteractive
+              ? undefined
+              : { transform: `perspective(1100px) rotateY(${baseRy}deg) rotateX(${baseRx}deg)` }
+          }
         >
           {isInteractive ? (
             <iframe
