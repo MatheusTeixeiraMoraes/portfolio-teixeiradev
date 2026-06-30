@@ -11,7 +11,7 @@ insert into public.projects (order_index, reverse, icon_key, color_scheme, pill_
   'Agente inteligente integrado ao app da Mercado Pago que automatiza registro de tarefas e agendamento de visitas — eliminando trabalho manual repetitivo da equipe.',
   array['IA','Automação','API Mercado Pago'],
   '[{"value":"600h","label":"Economizadas/mês","color":"purple"},{"value":"100%","label":"Automatizado","color":"default"}]'::jsonb,
-  '/videos/agente-ia.mp4'),
+  '/demos/agente-ia-fluxo.html'),
 
 (3, false, 'house', 'blue', 'SaaS · Co-fundador', 'CRM Multi-MCC',
   'SaaS com interface personalizada por segmento (restaurante, salão, farmácia). Integrado à maquininha, com NF-e automática e base de 16k clientes prontos para ativar.',

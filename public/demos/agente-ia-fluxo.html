@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apresentação — Fluxograma Agente IA Mercado Pago</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ===================== RESET & BASE ===================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --mp-blue:   #2563A8;
+      --mp-dark:   #0B1B2B;
+      --mp-yellow: #5C8FC9;
+      --mp-green:  #2563A8;
+      --mp-red:    #0B1B2B;
+      --mp-gray:   #F1F4F8;
+      --mp-white:  #FFFFFF;
+      --radius:    16px;
+      --shadow:    0 20px 60px -12px rgba(11,27,43,.35), 0 4px 16px rgba(11,27,43,.12);
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: linear-gradient(135deg, #0B1B2B 0%, #15324F 55%, #1E4669 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      color: #fff;
+      overflow-y: auto;
+    }
+
+    /* ===================== HEADER ===================== */
+    .header {
+      text-align: center;
+      margin-bottom: 22px;
+      animation: fadeDown .8s ease both;
+    }
+    .header .badge {
+      display: inline-block;
+      background: transparent;
+      color: rgba(255,255,255,.55);
+      font-weight: 600;
+      font-size: .82rem;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      padding: 0;
+      margin-bottom: 14px;
+      border: none;
+    }
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      line-height: 1.25;
+      color: #fff;
+    }
+
+    /* ===================== MAIN CONTAINER ===================== */
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      max-width: 1140px;
+      width: 100%;
+    }
+
+    /* ===================== BLOCK DISPLAY AREA ===================== */
+    .block-display {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 530px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ===================== BLOCK CARD (ENLARGED) ===================== */
+    .block {
+      width: 100%;
+      max-width: 820px;
+      max-height: 100%;
+      overflow-y: auto;
+      background: var(--mp-white);
+      color: var(--mp-dark);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 48px 44px;
+      position: absolute;
+      opacity: 0;
+      transform: translateX(50px) scale(0.97);
+      transition: opacity .55s cubic-bezier(0.22, 1, 0.36, 1), transform .55s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+    }
+    .block.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+    }
+    .block.exit {
+      opacity: 0;
+      transform: translateX(-40px) scale(0.97);
+      transition: opacity .28s cubic-bezier(0.4, 0, 1, 1), transform .28s cubic-bezier(0.4, 0, 1, 1);
+    }
+
+    /* Block accent bar */
+    .block::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      border-radius: var(--radius) 0 0 var(--radius);
+      background: var(--accent, var(--mp-blue));
+      opacity: .7;
+    }
+
+    /* Block number badge */
+    .block-num {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      color: rgba(11,27,43,.28);
+      font-weight: 600;
+      font-size: .72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .block-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .block-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--mp-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .block-icon svg {
+      width: 30px;
+      height: 30px;
+      stroke: var(--accent, var(--mp-blue));
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .block-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      color: var(--mp-dark);
+      line-height: 1.3;
+    }
+    .block-subtitle {
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--accent, var(--mp-blue));
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-top: 4px;
+    }
+
+    /* Item list */
+    .block ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+    .block ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.6;
+      color: #2A3744;
+    }
+    .block ul li::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent, var(--mp-blue));
+      flex-shrink: 0;
+      margin-top: 8px;
+      opacity: .8;
+    }
+
+    /* Decision diamonds */
+    .decision {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .decision-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--mp-gray);
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: .83rem;
+      font-weight: 500;
+      color: var(--mp-dark);
+      border: 1px solid transparent;
+    }
+    .decision-item.yes { border-color: rgba(37,99,168,.3); }
+    .decision-item.no  { border-color: rgba(11,27,43,.18); }
+    .decision-item .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .decision-item.yes .dot { background: var(--mp-blue); }
+    .decision-item.no  .dot { background: rgba(11,27,43,.4); }
+
+    /* Log snippet */
+    .log-snippet {
+      margin-top: 14px;
+      background: #0F2540;
+      color: #9FC3EC;
+      font-family: 'SF Mono', 'Courier New', monospace;
+      font-weight: 400;
+      font-size: .78rem;
+      padding: 12px 14px;
+      border-radius: 8px;
+      line-height: 1.7;
+      border-left: 2px solid var(--mp-blue);
+    }
+    .log-snippet span.ts { color: #6FA8DC; }
+    .log-snippet span.err { color: #B0BEC5; }
+
+    /* Queue table */
+    .queue-table {
+      margin-top: 14px;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .83rem;
+    }
+    .queue-table th {
+      background: var(--mp-gray);
+      color: var(--mp-dark);
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 600;
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .queue-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid #eef2f6;
+      font-weight: 400;
+      color: #2A3744;
+    }
+    .queue-table tr:nth-child(even) td { background: #fafbfd; }
+
+    /* Summary grid */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .summary-card {
+      background: var(--mp-gray);
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: center;
+      border-top: 2px solid var(--accent, var(--mp-blue));
+    }
+    .summary-card .val {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--accent, var(--mp-blue));
+    }
+    .summary-card .lbl {
+      font-size: .73rem;
+      font-weight: 400;
+      color: #5C6B7A;
+      margin-top: 3px;
+    }
+
+    /* ===================== LEGEND SECTION ===================== */
+    .legend-section {
+      background: rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      padding: 30px 38px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.12);
+      min-height: 170px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .legend-title {
+      font-size: .78rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,.5);
+      flex-shrink: 0;
+    }
+
+    .legend-content {
+      font-size: 1.02rem;
+      line-height: 1.85;
+      font-weight: 300;
+      color: rgba(255,255,255,.82);
+      flex-grow: 1;
+      max-width: 70ch;
+    }
+
+    .legend-content strong {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* ===================== CONTROLS ===================== */
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      margin-top: 34px;
+    }
+
+    .btn {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.16);
+      color: rgba(255,255,255,.85);
+      font-family: inherit;
+      font-weight: 500;
+      font-size: .95rem;
+      padding: 13px 26px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all .25s ease;
+      letter-spacing: .2px;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.3);
+    }
+
+    .btn:disabled {
+      opacity: .35;
+      cursor: default;
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(.98);
+    }
+
+    .btn.primary {
+      background: #fff;
+      border-color: #fff;
+      color: var(--mp-dark);
+      font-weight: 600;
+    }
+
+    .btn.primary:hover:not(:disabled) {
+      background: #E8EEF5;
+    }
+
+    .progress-info {
+      font-size: .78rem;
+      font-weight: 500;
+      color: rgba(255,255,255,.55);
+      letter-spacing: .5px;
+    }
+
+    .progress-bar-container {
+      width: 200px;
+      height: 3px;
+      background: rgba(255,255,255,.12);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: #5C8FC9;
+      width: 0%;
+      transition: width .4s ease;
+    }
+
+    /* ===================== ANIMATIONS ===================== */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 768px) {
+      .header h1 { font-size: 1.5rem; }
+      .block { padding: 30px 24px; }
+      .block-header { gap: 12px; }
+      .block-icon { width: 42px; height: 42px; }
+      .block-icon svg { width: 21px; height: 21px; }
+      .block-title { font-size: 1.1rem; }
+      .controls { flex-wrap: wrap; }
+      .progress-bar-container { width: 120px; }
+    }
+
+    /* Compact layout for short viewports (e.g. embedded inside a mockup iframe) */
+    @media (max-height: 700px) {
+      body { padding: 14px; }
+      .header { margin-bottom: 10px; }
+      .header .badge { margin-bottom: 6px; font-size: .68rem; }
+      .header h1 { font-size: 1.35rem; }
+      .container { gap: 12px; }
+      .block-display { height: 300px; }
+      .block { padding: 22px 20px; }
+      .block-header { margin-bottom: 12px; gap: 12px; }
+      .block-icon { width: 40px; height: 40px; }
+      .block-icon svg { width: 20px; height: 20px; }
+      .block-title { font-size: 1.1rem; }
+      .block-subtitle { font-size: .7rem; }
+      .block ul { gap: 8px; }
+      .block ul li { font-size: .85rem; line-height: 1.45; }
+      .legend-section { padding: 16px 20px; min-height: auto; }
+      .legend-content { font-size: .82rem; line-height: 1.55; }
+      .controls { margin-top: 16px; gap: 14px; }
+      .btn { padding: 9px 16px; font-size: .8rem; }
+      .progress-bar-container { width: 120px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="badge">Apresentação Interativa</div>
+  <h1>Fluxograma — Agente <span style="color:#5C8FC9">IA</span> <span style="color:#FFE600">Mercado Pago</span></h1>
+</div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <!-- Block Display Area -->
+  <div class="block-display" id="blockDisplay"></div>
+
+  <!-- Legend Section -->
+  <div class="legend-section">
+    <div class="legend-title">Descrição do Bloco Atual</div>
+    <div class="legend-content" id="legendContent">
+      Clique em "Próximo" para começar a apresentação...
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="btn" id="prevBtn" onclick="previousBlock()">← Anterior</button>
+    <div class="progress-info">
+      <div style="margin-bottom: 8px;"><span id="currentBlock">0</span> / <span id="totalBlocks">9</span></div>
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+    <button class="btn primary" id="nextBtn" onclick="handleNextClick()">Próximo →</button>
+  </div>
+
+</div>
+
+<script>
+  // ===================== DADOS DOS BLOCOS =====================
+  // ===================== ÍCONES (outline, monocromáticos) =====================
+  const icons = {
+    input: '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></svg>',
+    dispatch: '<svg viewBox="0 0 24 24"><path d="M4 11l16-7-7 16-2-7-7-2z"/></svg>',
+    browser: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.5-4-9s1.5-6.5 4-9z"/></svg>',
+    queue: '<svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/><circle cx="20" cy="17" r="1.4" fill="currentColor" stroke="none"/></svg>',
+    timer: '<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>',
+    search: '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>',
+    settings: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V19.5a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.96 17.85a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.04H2.5a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.15 6.96a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.09A1.7 1.7 0 0 0 9.6 1.06V1a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.04 1.56h.09a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.09a1.7 1.7 0 0 0 1.56 1.04h.5a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1.04z"/></svg>',
+    loop: '<svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg>',
+    summary: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 16v-4M12 16V8M16 16v-7"/></svg>'
+  };
+
+  const blocks = [
+    {
+      num: 1,
+      icon: 'input',
+      title: 'Entrada do Usuário',
+      subtitle: 'Interface do Agente',
+      accent: '#3B7DD8',
+      content: `
+        <ul>
+          <li>Selecionar consultores e atribuir IDs de clientes a cada um</li>
+          <li>Escolher tipo de operação: <strong>"Somente Registro de Visita"</strong> OU <strong>"Registro + Tarefas"</strong></li>
+          <li>Definir intervalo de tempo entre registros (ex.: 2 minutos)</li>
+          <li>Agendamento opcional: executar agora ou definir data/hora específica</li>
+          <li>Botão <strong>▶ INICIAR</strong> para começar a sessão</li>
+        </ul>
+      `,
+      legend: `
+        <strong>O Bloco 1 é o ponto de entrada do sistema.</strong> O usuário configura todos os parâmetros da automação:
+        qual consultor vai executar, quais IDs de clientes serão processados, qual tipo de operação (apenas registro ou
+        registro com tarefas), o intervalo de tempo entre ações e quando a sessão deve começar. Após configurar tudo,
+        o usuário clica no botão INICIAR para disparar o fluxo.
+      `
+    },
+    {
+      num: 2,
+      icon: 'dispatch',
+      title: 'Despacho para Claude Cowork',
+      subtitle: 'Serialização e Criação de Sessão',
+      accent: '#2B62B0',
+      content: `
+        <ul>
+          <li>Interface serializa a configuração em tabela formatada</li>
+          <li>Tabela enviada como comando ao Claude Cowork via extensão de navegador</li>
+          <li>Cowork recebe o payload e cria a sessão</li>
+          <li>ID de sessão gerado automaticamente, arquivo de log criado: <code>sessao_[datetime].txt</code></li>
+        </ul>
+        <table class="queue-table" style="margin-top:12px">
+          <thead><tr><th>Consultor</th><th>IDs</th><th>Tipo</th><th>Intervalo</th></tr></thead>
+          <tbody>
+            <tr><td>Consultor 1</td><td>ID 1, 2, 3…</td><td>Reg. + Tarefas</td><td>2 min</td></tr>
+            <tr><td>Consultor 2</td><td>ID 5, 6, 7…</td><td>Somente Reg.</td><td>2 min</td></tr>
+          </tbody>
+        </table>
+      `,
+      legend: `
+        <strong>O Bloco 2 é a ponte entre a interface e o Claude Cowork.</strong> A configuração do usuário é convertida
+        em um formato estruturado (tabela) e enviada via extensão de navegador. O Cowork recebe essa instrução, valida
+        os dados, cria uma nova sessão com um ID único e inicializa um arquivo de log para rastrear todas as ações que
+        acontecerão durante a execução.
+      `
+    },
+    {
+      num: 3,
+      icon: 'browser',
+      title: 'Inicialização dos Navegadores',
+      subtitle: 'Abertura de Perfis e Verificação',
+      accent: '#1E4D8C',
+      content: `
+        <ul>
+          <li>Cowork lê a lista de consultores</li>
+          <li>Abre o navegador/perfil de cada consultor simultaneamente</li>
+          <li>Verifica se a extensão Claude está ativa em cada navegador</li>
+          <li>Acessa o aplicativo Mercado Pago em cada conta</li>
+        </ul>
+        <div class="decision">
+          <div class="decision-item yes"><div class="dot"></div>SIM → Extensão ativa: prosseguir</div>
+          <div class="decision-item no"><div class="dot"></div>NÃO → Registrar erro, pular consultor</div>
+        </div>
+        <div class="log-snippet">
+          <span class="ts">[HH:MM:SS]</span> Sessão iniciada — X navegadores abertos com sucesso
+        </div>
+      `,
+      legend: `
+        <strong>O Bloco 3 prepara o ambiente de execução.</strong> O Cowork abre os navegadores de cada consultor
+        (potencialmente em paralelo), verifica se a extensão Claude está instalada e ativa (se não estiver, registra
+        um erro e pula esse consultor), e navega até o aplicativo Mercado Pago. Ao final, um log com timestamp é
+        registrado indicando quantos navegadores foram abertos com sucesso.
+      `
+    },
+    {
+      num: 4,
+      icon: 'queue',
+      title: 'Montagem da Fila Intercalada',
+      subtitle: 'Distribuição Alternada entre Consultores',
+      accent: '#5C8FC9',
+      content: `
+        <ul>
+          <li>Cowork organiza os IDs em fila intercalada, alternando entre consultores</li>
+        </ul>
+        <table class="queue-table">
+          <thead><tr><th>Posição</th><th>Consultor</th><th>ID do Cliente</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Consultor 1</td><td>ID 1</td></tr>
+            <tr><td>2</td><td>Consultor 2</td><td>ID 5</td></tr>
+            <tr><td>3</td><td>Consultor 1</td><td>ID 2</td></tr>
+            <tr><td>4</td><td>Consultor 2</td><td>ID 6</td></tr>
+            <tr><td>…</td><td>…</td><td>…</td></tr>
+          </tbody>
+        </table>
+        <div class="log-snippet">
+          <span class="ts">[HH:MM:SS]</span> Fila montada — X itens a processar
+        </div>
+      `,
+      legend: `
+        <strong>O Bloco 4 organiza a ordem de execução.</strong> Em vez de processar todos os IDs do Consultor 1
+        e depois todos do Consultor 2, o sistema cria uma fila intercalada que alterna entre os consultores.
+        Isso garante distribuição equilibrada de carga e evita que um consultor fique ocioso enquanto outro está
+        sobrecarregado. A fila é registrada no log com um timestamp.
+      `
+    },
+    {
+      num: 5,
+      icon: 'timer',
+      title: 'Controle de Intervalo',
+      subtitle: 'Antes de Cada Item da Fila',
+      accent: '#16365E',
+      content: `
+        <ul style="color:#334">
+          <li>O intervalo definido já passou desde o último registro <strong>deste consultor</strong>?</li>
+        </ul>
+        <div class="decision">
+          <div class="decision-item yes"><div class="dot"></div>SIM → Prosseguir para execução</div>
+          <div class="decision-item no"><div class="dot"></div>NÃO → Calcular tempo restante, aguardar e prosseguir</div>
+        </div>
+      `,
+      legend: `
+        <strong>O Bloco 5 é um ponto de controle crítico.</strong> Antes de executar cada item da fila, o sistema
+        verifica se o intervalo de tempo definido (ex.: 2 minutos) já passou desde o último registro <strong>daquele
+        consultor específico</strong>. Se o intervalo ainda não passou, o sistema aguarda o tempo restante. Isso garante
+        que registros não sejam feitos muito rapidamente e respeita as regras de negócio do Mercado Pago.
+      `
+    },
+    {
+      num: 6,
+      icon: 'search',
+      title: 'Execução no Cliente',
+      subtitle: 'Busca e Abertura do Perfil',
+      accent: '#2563A8',
+      content: `
+        <ul>
+          <li>Cowork foca no navegador do consultor</li>
+          <li>Pesquisa o ID do cliente no aplicativo Mercado Pago</li>
+        </ul>
+        <div class="decision">
+          <div class="decision-item yes"><div class="dot"></div>SIM → Cliente encontrado: abrir perfil</div>
+          <div class="decision-item no"><div class="dot"></div>NÃO → Criar alerta, registrar erro, pular para próximo</div>
+        </div>
+        <div class="log-snippet">
+          <span class="err">[HH:MM:SS] ERRO — ID X não encontrado | Consultor: Nome</span>
+        </div>
+      `,
+      legend: `
+        <strong>O Bloco 6 busca o cliente no sistema.</strong> O Cowork foca no navegador do consultor correto,
+        usa a barra de busca do Mercado Pago para localizar o ID do cliente. Se encontrado, abre o perfil do cliente.
+        Se não encontrado, registra um erro no log com o ID, o consultor e a razão, e pula para o próximo item da fila.
+        Todos os erros são coletados para o relatório final.
+      `
+    },
+    {
+      num: 7,
+      icon: 'settings',
+      title: 'Operação no Perfil do Cliente',
+      subtitle: 'Execução de Tarefas e Registro',
+      accent: '#0F2540',
+      content: `
+        <ul>
+          <li>Tipo de operação: <strong>"Somente Registro"</strong> OU <strong>"Registro + Tarefas"</strong></li>
+          <li><strong>Se Registro + Tarefas:</strong> Cowork lê as tarefas específicas do cliente e executa uma a uma no app MP</li>
+          <li>Em seguida, executa o Registro de Atendimento</li>
+          <li>Marca o cliente como concluído</li>
+        </ul>
+        <div class="log-snippet">
+          <span class="ts">[HH:MM:SS]</span> Tarefa X concluída — ID Y | Consultor: Nome<br>
+          <span class="ts">[HH:MM:SS]</span> Registro concluído — ID: Y | Consultor: Nome | Tipo: [tipo]
+        </div>
+      `,
+      legend: `
+        <strong>O Bloco 7 executa as operações principais.</strong> Dependendo do tipo escolhido no Bloco 1,
+        o sistema pode apenas registrar a visita OU registrar a visita E executar tarefas específicas. Se for
+        "Registro + Tarefas", o Cowork lê cada tarefa associada ao cliente e as executa uma por uma no app.
+        Depois, executa o Registro de Atendimento. Cada ação é registrada no log com timestamp.
+      `
+    },
+    {
+      num: 8,
+      icon: 'loop',
+      title: 'Controle do Loop da Fila',
+      subtitle: 'Verificação de Continuidade',
+      accent: '#4A78B5',
+      content: `
+        <ul>
+          <li>Marcar item como concluído na fila</li>
+          <li>Ainda há itens na fila?</li>
+        </ul>
+        <div class="decision">
+          <div class="decision-item yes"><div class="dot"></div>SIM → Retornar ao Bloco 5 (controle de intervalo)</div>
+          <div class="decision-item no"><div class="dot"></div>NÃO → Sessão concluída, ir para Bloco 9</div>
+        </div>
+      `,
+      legend: `
+        <strong>O Bloco 8 controla o loop de processamento.</strong> Após completar um item da fila, o sistema marca-o
+        como concluído e verifica se ainda há itens a processar. Se sim, retorna ao Bloco 5 (controle de intervalo)
+        para processar o próximo item. Se não, significa que toda a fila foi processada e a sessão pode ser encerrada,
+        passando para o Bloco 9.
+      `
+    },
+    {
+      num: 9,
+      icon: 'summary',
+      title: 'Encerramento da Sessão e Resumo',
+      subtitle: 'Relatório Final e Arquivamento',
+      accent: '#0B1B2B',
+      content: `
+        <ul>
+          <li>Cowork fecha todos os navegadores da sessão</li>
+          <li>Salva arquivo de log: <code>sessao_[datetime].txt</code> com timestamps, ações, erros e totais</li>
+          <li>Exibe resumo na interface</li>
+          <li>Sessão arquivada no histórico da interface</li>
+        </ul>
+        <div class="summary-grid">
+          <div class="summary-card" style="border-color:#3B7DD8">
+            <div class="val" style="color:#3B7DD8">XX</div>
+            <div class="lbl">Registros Consultor 1</div>
+          </div>
+          <div class="summary-card" style="border-color:#1E4D8C">
+            <div class="val" style="color:#1E4D8C">XX</div>
+            <div class="lbl">Registros Consultor 2</div>
+          </div>
+          <div class="summary-card" style="border-color:#2563A8">
+            <div class="val" style="color:#2563A8">XX</div>
+            <div class="lbl">Total de Registros</div>
+          </div>
+          <div class="summary-card" style="border-color:#0F2540">
+            <div class="val" style="color:#0F2540">XX</div>
+            <div class="lbl">Tarefas Executadas</div>
+          </div>
+        </div>
+      `,
+      legend: `
+        <strong>O Bloco 9 encerra a sessão e gera o relatório final.</strong> O Cowork fecha todos os navegadores,
+        salva o arquivo de log completo com todos os timestamps, ações executadas e erros encontrados, e exibe um
+        resumo visual na interface mostrando: quantos registros cada consultor completou, total de registros,
+        total de tarefas executadas, duração da sessão e lista de erros. A sessão é então arquivada no histórico.
+      `
+    }
+  ];
+
+  let currentIndex = -1;
+  let isTransitioning = false;
+
+  function renderBlock(index) {
+    if (index < 0 || index >= blocks.length) return;
+    if (isTransitioning) return;
+    isTransitioning = true;
+
+    const block = blocks[index];
+    const display = document.getElementById('blockDisplay');
+    const legend = document.getElementById('legendContent');
+
+    // Remove ALL previous blocks (handles rapid clicks leaving orphans)
+    const oldBlocks = display.querySelectorAll('.block');
+    oldBlocks.forEach(old => {
+      old.classList.remove('active');
+      old.classList.add('exit');
+      setTimeout(() => old.remove(), 280);
+    });
+
+    // Create new block
+    const blockEl = document.createElement('div');
+    blockEl.className = 'block';
+    blockEl.style.setProperty('--accent', block.accent);
+    blockEl.innerHTML = `
+      <div class="block-num">Bloco ${block.num}</div>
+      <div class="block-header">
+        <div class="block-icon">${icons[block.icon] || ''}</div>
+        <div>
+          <div class="block-title">${block.title}</div>
+          <div class="block-subtitle">${block.subtitle}</div>
+        </div>
+      </div>
+      ${block.content}
+    `;
+
+    display.appendChild(blockEl);
+    setTimeout(() => blockEl.classList.add('active'), 60);
+
+    // Update legend
+    legend.innerHTML = block.legend;
+
+    // Update progress
+    document.getElementById('currentBlock').textContent = block.num;
+    const progress = (block.num / blocks.length) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+
+    // Update button states
+    document.getElementById('prevBtn').disabled = index === 0;
+    const nextBtn = document.getElementById('nextBtn');
+    if (index === blocks.length - 1) {
+      nextBtn.textContent = '↻ Reiniciar';
+      nextBtn.disabled = false;
+    } else {
+      nextBtn.textContent = 'Próximo →';
+      nextBtn.disabled = false;
+    }
+
+    // Release navigation lock once transition settles
+    setTimeout(() => { isTransitioning = false; }, 320);
+  }
+
+  function nextBlock() {
+    if (isTransitioning) return;
+    if (currentIndex < blocks.length - 1) {
+      currentIndex++;
+      renderBlock(currentIndex);
+    }
+  }
+
+  function previousBlock() {
+    if (isTransitioning) return;
+    if (currentIndex > 0) {
+      currentIndex--;
+      renderBlock(currentIndex);
+    }
+  }
+
+  function restartFlow() {
+    if (isTransitioning) return;
+    currentIndex = 0;
+    renderBlock(currentIndex);
+  }
+
+  function handleNextClick() {
+    if (currentIndex === blocks.length - 1) {
+      restartFlow();
+    } else {
+      nextBlock();
+    }
+  }
+
+  // Initialize
+  document.getElementById('totalBlocks').textContent = blocks.length;
+  nextBlock();
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') handleNextClick();
+    if (e.key === 'ArrowLeft') previousBlock();
+  });
+</script>
+</body>
+</html>

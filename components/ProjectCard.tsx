@@ -12,8 +12,10 @@ const METRIC_CLASS: Record<Project["metrics"][number]["color"], string> = {
 
 export function ProjectCard({ project, baseRy, baseRx }: { project: Project; baseRy: number; baseRx: number }) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [visible, setVisible] = useState(false);
+  const isInteractive = project.video_path.endsWith(".html");
 
   useEffect(() => {
     const el = cardRef.current;
@@ -114,11 +116,11 @@ export function ProjectCard({ project, baseRy, baseRx }: { project: Project; bas
   }, [baseRy, baseRx]);
 
   function handleFullscreen() {
-    const video = videoRef.current;
-    if (!video) return;
-    if (video.requestFullscreen) video.requestFullscreen();
-    else if ((video as HTMLVideoElement & { webkitEnterFullscreen?: () => void }).webkitEnterFullscreen)
-      (video as HTMLVideoElement & { webkitEnterFullscreen?: () => void }).webkitEnterFullscreen!();
+    const el = isInteractive ? iframeRef.current : videoRef.current;
+    if (!el) return;
+    if (el.requestFullscreen) el.requestFullscreen();
+    else if ((el as HTMLVideoElement & { webkitEnterFullscreen?: () => void }).webkitEnterFullscreen)
+      (el as HTMLVideoElement & { webkitEnterFullscreen?: () => void }).webkitEnterFullscreen!();
   }
 
   return (
@@ -156,23 +158,43 @@ export function ProjectCard({ project, baseRy, baseRx }: { project: Project; bas
         <div
           ref={cardRef}
           className="screen-card"
-          style={{ transform: `perspective(1100px) rotateY(${baseRy}deg) rotateX(${baseRx}deg)` }}
+          style={
+            isInteractive
+              ? undefined
+              : { transform: `perspective(1100px) rotateY(${baseRy}deg) rotateX(${baseRx}deg)` }
+          }
         >
-          <video
-            ref={videoRef}
-            src={visible ? project.video_path : undefined}
-            preload="none"
-            autoPlay={visible}
-            loop
-            muted
-            playsInline
-          />
+          {isInteractive ? (
+            <iframe
+              ref={iframeRef}
+              src={visible ? project.video_path : undefined}
+              title={project.name}
+              loading="lazy"
+              sandbox="allow-scripts"
+            />
+          ) : (
+            <video
+              ref={videoRef}
+              src={visible ? project.video_path : undefined}
+              preload="none"
+              autoPlay={visible}
+              loop
+              muted
+              playsInline
+            />
+          )}
         </div>
         <span className="drag-hint">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3" />
-          </svg>
-          Arraste para rotacionar
+          {isInteractive ? (
+            "Clique para interagir com a apresentação"
+          ) : (
+            <>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3" />
+              </svg>
+              Arraste para rotacionar
+            </>
+          )}
         </span>
       </div>
     </div>
