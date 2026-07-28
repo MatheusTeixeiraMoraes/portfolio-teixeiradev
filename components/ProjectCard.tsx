@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { ProjectIcon } from "./ProjectIcon";
 import type { Project } from "@/types/project";
 
@@ -10,7 +11,17 @@ const METRIC_CLASS: Record<Project["metrics"][number]["color"], string> = {
   purple: "p",
 };
 
-export function ProjectCard({ project, baseRy, baseRx }: { project: Project; baseRy: number; baseRx: number }) {
+export function ProjectCard({
+  project,
+  baseRy,
+  baseRx,
+  caseSlug,
+}: {
+  project: Project;
+  baseRy: number;
+  baseRx: number;
+  caseSlug?: string | null;
+}) {
   const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -147,6 +158,15 @@ export function ProjectCard({ project, baseRy, baseRx }: { project: Project; bas
             </div>
           ))}
         </div>
+
+        {caseSlug && (
+          <Link href={`/cases/${caseSlug}`} className="pi-case-link">
+            Saiba mais sobre esse projeto
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
+        )}
       </div>
 
       <div className="pd">

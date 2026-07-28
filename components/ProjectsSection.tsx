@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { ProjectCard } from "./ProjectCard";
+import { getCaseByProjectName } from "@/content/cases";
 import type { Project } from "@/types/project";
 
 const TILTS = [
@@ -29,7 +30,16 @@ export async function ProjectsSection() {
 
       {projects.map((project, i) => {
         const tilt = TILTS[i % TILTS.length];
-        return <ProjectCard key={project.id} project={project} baseRy={tilt.ry} baseRx={tilt.rx} />;
+        const study = getCaseByProjectName(project.name);
+        return (
+          <ProjectCard
+            key={project.id}
+            project={project}
+            baseRy={tilt.ry}
+            baseRx={tilt.rx}
+            caseSlug={study?.slug ?? null}
+          />
+        );
       })}
     </section>
   );
