@@ -56,6 +56,14 @@ a{text-decoration:none;color:inherit}
   .nav-links a{text-align:center;padding:12px 15px}
 }
 
+.quote-block{
+  border-left:2px solid var(--accent);padding:.5rem 1rem;margin:1.25rem 0 1.5rem;
+  font-size:13px;color:var(--text-body);font-style:italic;max-width:420px;
+  animation:quote-glow 4s ease-in-out infinite;
+}
+@keyframes quote-glow{0%,100%{border-left-color:var(--accent)}50%{border-left-color:var(--accent-border)}}
+@media(prefers-reduced-motion:reduce){.quote-block{animation:none}}
+
 .social-email{display:flex;align-items:center;gap:8px;color:var(--text-muted);font-family:var(--mono);font-size:12.5px;transition:color .2s}
 .social-email:hover{color:var(--accent)}
 .social-email svg{width:20px;height:20px;flex-shrink:0}
@@ -226,6 +234,7 @@ footer.site-footer{font-family:var(--mono);font-size:11px;color:var(--text-muted
 
 @media(max-width:900px){
   .main{padding:1rem 1.5rem 4rem;max-width:none}
+  .quote-block{display:none}
   .hero h1{font-size:1.7rem}
   .site-footer-row{padding:2rem 1.5rem}
 }
