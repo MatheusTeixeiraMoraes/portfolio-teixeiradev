@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
-import { PageBackground } from "@/components/PageBackground";
 import { Footer } from "@/components/Footer";
 import { CaseMedia } from "@/components/CaseMedia";
 import { CASES, slugify } from "@/content/cases";
@@ -41,10 +40,8 @@ export default async function CasePage(props: PageProps<"/cases/[slug]">) {
 
   return (
     <div className="case-shell">
-      <PageBackground />
-
       <article className="case">
-        <Link href="/#projetos" className="case-back">
+        <Link href="/projetos" className="case-back">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
@@ -128,7 +125,7 @@ export default async function CasePage(props: PageProps<"/cases/[slug]">) {
               </svg>
               Enviar e-mail
             </a>
-            <Link href="/#projetos" className="btn-secondary">
+            <Link href="/projetos" className="btn-secondary">
               Ver outros projetos
             </Link>
           </div>
